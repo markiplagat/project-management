@@ -7,54 +7,58 @@
       <div class="level">
         <div class="level-left">
           <h3 class="subtitle is-5">
-            My Projects <span class="tag is-rounded">0</span>
+            My Projects <span class="tag is-rounded"><%= @projects.count %></span>
           </h3>
         </div>
         <div class="level-right">
           <p class="field">
-            <%= link_to 'New Project', class:"button is-small" do %>
+            <%= link_to new_project_path, class:"button is-small" do %>
                <span class="icon is-small has-text-link"><i class="fa fa-plus"></i> </span>
             <% end %>
           </p>
         </div>
       </div>
       <hr />
-      <div class="content border-bottom pb4">
-        <p class="title is-4">
-          <%= link_to 'Project Name', '#' %>
-        </p>
-        <p class="subtitle is-6">
-          <%= link_to 'Project Team Name', '#' %>
-        </p>
-        <p class="f6">Created by Name</p>
-      </div>
+      <% @projects.each do |project| %>
+        <div class="content border-bottom pb4">
+          <p class="title is-4">
+            <%= link_to project.name, project %>
+          </p>
+          <p class="subtitle is-6">
+            <%= link_to project.team.name, project.team %>
+          </p>
+          <p class="f6">Created by <%= project.user.name %></p>
+        </div>
+      <% end %>
     </div>
 
     <div class="column border-right ph4">
       <div class="level">
         <div class="level-left">
           <h3 class="subtitle is-5">
-            My Teams <span class="tag is-rounded">0</span>
+            My Teams <span class="tag is-rounded"><%= @teams.count %></span>
           </h3>
         </div>
         <div class="level-right">
           <p class="field">
-            <%= link_to '#', class:"button is-small" do %>
+            <%= link_to new_team_path, class:"button is-small" do %>
               <span class="icon is-small has-text-link"><i class="fa fa-plus"></i> </span>
             <% end %>
           </p>
         </div>
       </div>
       <hr />
-      <div class="content border-bottom pb4">
-        <p class="title is-4">
-          <%= link_to 'Team Name', '#' %>
-        </p>
-        <p class="subtitle is-6">
-          0 Members
-        </p>
-        <span class="f6">Mar, Rutto, Kiplagat</span>
-      </div>
+      <% @teams.each do |team| %>
+        <div class="content border-bottom pb4">
+          <p class="title is-4">
+            <%= link_to team.name, team %>
+          </p>
+          <p class="subtitle is-6">
+            <%= team.user.count %> Members
+          </p>
+          <span class="f6"><%= safe_join(team.users.map { |user| user.name }, ', ') %></span>
+        </div>
+      <% end %>
     </div>
 
     <div class="column ph4">

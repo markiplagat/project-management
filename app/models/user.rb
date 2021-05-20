@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  has_many :projects
-  has_many :teams
+  has_many :projects, dependent: :destroy
+  has_many :teams, dependent: :destroy
 
   # new function to set the password without knowing the current
   # password used in our confirmation controller.

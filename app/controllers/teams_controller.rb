@@ -1,9 +1,10 @@
 class TeamsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_team, only: %i[ show edit update destroy ]
 
   # GET /teams or /teams.json
   def index
-    @teams = Team.all
+    @teams = Team.all.order("created_at DESC")
   end
 
   # GET /teams/1 or /teams/1.json
@@ -12,7 +13,8 @@ class TeamsController < ApplicationController
 
   # GET /teams/new
   def new
-    @team = Team.new
+    @team = current_user.teams.build
+    @user = current_user
   end
 
   # GET /teams/1/edit
@@ -21,11 +23,13 @@ class TeamsController < ApplicationController
 
   # POST /teams or /teams.json
   def create
-    @team = Team.new(team_params)
+    @team = current_user.teams.build(team_params)
+    # Current user to be also associated with the team.
+    @team.users << current_user
 
     respond_to do |format|
       if @team.save
-        format.html { redirect_to @team, notice: "Team was successfully created." }
+        format.html { redirect_to root_path, notice: "Team was successfully created." }
         format.json { render :show, status: :created, location: @team }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -64,6 +68,6 @@ class TeamsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def team_params
-      params.require(:team).permit(:name)
+      params.require(:team).permit(:name, users_attributes: [:id, :name, :email, :_destroy])
     end
 end

@@ -14,46 +14,55 @@
   <p>Invite users to join this team</p>
 </div>
 
-<div class="field">
-  <div class="control">
-    <label class="label">Name</label>
-    <input type="text" class="text" />
+<div v-for="(user, index) in team.users.attributes">
+  <div v-if="user._destroy == '1' ">
+    {{ user.name }} will be removed.
+    <button v-on:click="UndoRemove(index)" class="button is-small">Undo</button>
   </div>
-</div>
+  <div v-else>
+    <div class="field">
+      <div class="control">
+        <label class="label">Name</label>
+        <input type="text" class="text" v-model="user.name" />
+      </div>
+    </div>
 
-<div class="field">
-  <div class="control">
-    <label class="label">Email</label>
-    <input type="text" class="text" />
-  </div>
-</div>
+    <div class="field">
+      <div class="control">
+        <label class="label">Email</label>
+        <input type="text" class="text" v-model="user.email" />
+        <div id="errors" class="has-text-danger" v-if="errors.length">{{ errors }}</div>
+      </div>
+    </div>
 
-<input type="hidden" value="<%= current_user.id %>"/>
+    <input type="hidden" value="<%= current_user.id %>"/>
 
-<div class="field">
-  <div class="control">
-    <button class="button is-small">
-      Remove
-    </button>
-  </div>
-</div>
+    <div class="field">
+      <div class="control">
+        <button class="button is-small" v-on:click="removeUser(index)">
+          Remove
+        </button>
+      </div>
+    </div>
 
-<hr />
+    <hr />
 
-<div class="field">
-  <div class="control">
-    <button class="button is-link">Add User</button>
-  </div>
-</div>
+    <div class="field">
+      <div class="control">
+        <button v-on:click="addUser" class="button is-link">Add User</button>
+      </div>
+    </div>
 
-<hr />
+    <hr />
 
-<div class="field">
-  <div class="control">
-    <% if current_page?(new_team_path) %>
-      <button class="button is-success is-large">Create Team</button>
-    <% else %>
-     <button class="button is-success is-large">Save Team</button>
-    <% end %>
+    <div class="field">
+      <div class="control">
+        <% if current_page?(new_team_path) %>
+          <button v-on:click="saveTeam" class="button is-success is-large">Create Team</button>
+        <% else %>
+          <button v-on:click="saveTeam" class="button is-success is-large">Save Team</button>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

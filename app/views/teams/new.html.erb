@@ -5,28 +5,26 @@
                  data: {
                    id: @team.id,
                    team: @team.to_json(except: [:id, :created_at, :update_at]),
-                   user_attributes: @team.users.to_json(except: [:created_at, :update_at])
+                   users_attributes: @team.users.to_json(except: [:created_at, :update_at])
                  } do %>
-  <div class="column is-5">
+  <div class="column is-5" :class="{ formstatic: scrollPosition < 100, formfixed: scrollPosition > 100 }">
     <h1 class="subtitle is-3">
       Create a New Team
     </h1>
     <%= render 'form', team: @team %>
   </div>
 
-    <div class="column is-5">
-      <h2 class="subtitle is-3">
-        Team Name
-      </h2>
+    <div class="column is-5" :class="{ formstatic: scrollPosition < 100, formfixed: scrollPosition > 100 }">
+      <h2 class="subtitle is-3">{{ team.name }}</h2>
       <table>
         <div class="table is-fullwidth">
           <thead>
           <th>Name</th>
           <th>Email</th>
           </thead>
-          <tr>
-            <td>User Name</td>
-            <td>User Email</td>
+          <tr class="user" v-for="(user, index) in team.users_attributes">
+            <td>{{ user.name }}</td>
+            <td>{{user.email}}</td>
           </tr>
         </div>
       </table>

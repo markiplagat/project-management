@@ -1,5 +1,4 @@
 class ConfirmationsController < Devise::ConfirmationsController
-
   def update
     with_unconfirmed_confirmable do
       if @confirmable.has_no_password?
@@ -10,11 +9,11 @@ class ConfirmationsController < Devise::ConfirmationsController
           do_show
           @confirmable.errors.clear # so that we don't render new
         end
-        else
-          @confirmable.errors.add(:email, :password_already_set)
+      else
+        @confirmable.errors.add(:email, :password_already_set)
       end
     end
-    if !@confirmable.errors.empty?
+    unless @confirmable.errors.empty?
       self.resource = @confirmable
       render 'devise/confirmations/new'
     end
@@ -24,8 +23,8 @@ class ConfirmationsController < Devise::ConfirmationsController
     with_unconfirmed_confirmable do
       if @confirmable.has_no_password?
         do_show
-        else
-          do_confirm
+      else
+        do_confirm
       end
     end
     unless @confirmable.errors.empty?
@@ -36,11 +35,9 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   protected
 
-  def with_unconfirmed_confirmable
+  def with_unconfirmed_confirmable(&block)
     @confirmable = User.find_or_initialize_with_error_by(:confirmation_token, params[:confirmation_token])
-    if !@confirmable.new_record?
-      @confirmable.only_if_unconfirmed {yield}
-    end
+    @confirmable.only_if_unconfirmed(&block) unless @confirmable.new_record?
   end
 
   def do_show
@@ -55,5 +52,4 @@ class ConfirmationsController < Devise::ConfirmationsController
     set_flash_message :notice, :confirmed
     sign_in_and_redirect(resource_name, @confirmable)
   end
-
 end

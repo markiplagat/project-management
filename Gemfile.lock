@@ -98,8 +98,6 @@ GEM
     eventmachine (1.2.7)
     execjs (2.7.0)
     ffi (1.15.0)
-    font-awesome-sass (5.15.1)
-      sassc (>= 1.11)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     gravatar_image_tag (1.2.0)
@@ -252,7 +250,6 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
-  font-awesome-sass
   gravatar_image_tag
   jbuilder (~> 2.7)
   jquery-rails
@@ -276,7 +273,7 @@ DEPENDENCIES
   wysiwyg-rails
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.6.6p146
 
 BUNDLED WITH
-   2.2.13
+   2.3.8
